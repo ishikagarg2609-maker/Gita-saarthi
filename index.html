@@ -30,12 +30,13 @@ header .sub{font-size:12px;color:#c9c2e8;margin-top:2px;font-weight:400}
 #msg{flex:1;padding:13px 16px;border-radius:24px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border .2s}
 #msg::placeholder{color:#a99fce}
 #msg:focus{border-color:#ff9d6c}
-#mic,#send{width:50px;height:50px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
-#mic svg,#send svg{width:22px;height:22px}
+#mic,#send,#upload{width:50px;height:50px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
+#mic svg,#send svg,#upload svg{width:22px;height:22px}
 #mic{border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#ffd98a}
+#upload{border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#8fd3ff}
 #mic.rec{background:linear-gradient(135deg,#ff5f6d,#ff2d55);color:#fff;border-color:transparent;animation:pulse 1s infinite}
 #send{border:none;background:linear-gradient(135deg,#ffb347,#ff7e5f);color:#fff;box-shadow:0 4px 14px rgba(255,126,95,.5)}
-#send:active,#mic:active{transform:scale(.9)}
+#send:active,#mic:active,#upload:active{transform:scale(.9)}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,45,85,.6)}70%{box-shadow:0 0 0 12px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
@@ -43,6 +44,8 @@ header .sub{font-size:12px;color:#c9c2e8;margin-top:2px;font-weight:400}
 <header><span class="om">&#128329;</span><div class="title">Gita Saarthi</div><div class="sub">Krishna ki vaani, aapke saath</div></header>
 <div id="chat"></div>
 <div id="bar">
+<button id="upload" title="Audio file upload karein (testing)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM12 2 6 8h4v8h4V8h4l-6-6z"/></svg></button>
+<input id="fileInput" type="file" accept="audio/*" style="display:none">
 <button id="mic" title="Bolein"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg></button>
 <input id="msg" placeholder="Yahan likhein..." autocomplete="off">
 <button id="send" title="Bhejein"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.45-7.48a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.4.92V9.6a1 1 0 0 0 .78.98L14 12 2.78 13.42a1 1 0 0 0-.78.98v5.08a1 1 0 0 0 1.4.92z"/></svg></button>
@@ -50,6 +53,7 @@ header .sub{font-size:12px;color:#c9c2e8;margin-top:2px;font-weight:400}
 <script>
 var WEBHOOK_URL = "https://ishikagarg.app.n8n.cloud/webhook/gita-voice";
 var chat=document.getElementById("chat"),input=document.getElementById("msg"),btn=document.getElementById("send"),mic=document.getElementById("mic");
+var uploadBtn=document.getElementById("upload"),fileInput=document.getElementById("fileInput");
 var LOTUS=String.fromCodePoint(129466),PRAY=String.fromCodePoint(128591);
 function add(t,w){var row=document.createElement("div");row.className="row "+w;var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);var b=document.createElement("div");b.className="bubble";b.textContent=t;row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
 function addTyping(){var row=document.createElement("div");row.className="row bot";var av=document.createElement("div");av.className="av bot";av.textContent=LOTUS;var b=document.createElement("div");b.className="bubble";var t=document.createElement("span");t.className="typing";t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));b.appendChild(t);row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
@@ -59,41 +63,52 @@ add("Namaste priya mitra "+PRAY,"bot");
 async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(no reply)";}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
 async function toggleMic(){
-  alert("STEP 1: Mic tapped. recording=" + recording);
   if(recording){
-    alert("STEP 2: Calling stop() now.");
     mediaRec.stop();
     return;
   }
   try{
     var stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    alert("STEP A: Got mic stream OK.");
     mediaRec=new MediaRecorder(stream);
     chunks=[];
     mediaRec.ondataavailable=function(e){
-      alert("STEP B: ondataavailable fired. size=" + e.data.size);
       if(e.data && e.data.size>0){chunks.push(e.data);}
     };
     mediaRec.onstop=function(){
-      alert("STEP C: onstop fired. chunks.length=" + chunks.length);
       recording=false;
       mic.classList.remove("rec");
       stream.getTracks().forEach(function(t){t.stop();});
       var finalBlob=new Blob(chunks,{type:"audio/webm"});
-      alert("STEP D: finalBlob size=" + finalBlob.size);
-      sendVoice(finalBlob);
+      sendVoice(finalBlob,"recording.webm");
     };
     mediaRec.start();
-    alert("STEP E: mediaRec.start() called. state=" + mediaRec.state);
     recording=true;
     mic.classList.add("rec");
   }catch(e){
     alert("Mic access nahi mila: "+e.name+" - "+e.message);
   }
 }
-async function sendVoice(blob){
-alert("STEP F: sendVoice called. blob size=" + blob.size + " type=" + blob.type);
-add(String.fromCodePoint(127908)+" (aapki awaaz)","user");var L=addTyping();try{var fd=new FormData();fd.append("data",blob,"recording.webm");fd.append("sessionId","mobile-user");var res=await fetch(WEBHOOK_URL,{method:"POST",body:fd});var data=await res.json();L.textContent=data.reply||"(no reply)";if(data.audioBase64){addPlay(L,data.audioBase64);play(data.audioBase64);}}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
+uploadBtn.addEventListener("click",function(){fileInput.click();});
+fileInput.addEventListener("change",function(){
+  var f=fileInput.files && fileInput.files[0];
+  if(!f)return;
+  sendVoice(f,f.name);
+  fileInput.value="";
+});
+async function sendVoice(blob,filename){
+  add(String.fromCodePoint(127908)+" (audio: "+filename+", "+blob.size+" bytes)","user");
+  var L=addTyping();
+  try{
+    var fd=new FormData();
+    fd.append("data",blob,filename||"recording.webm");
+    fd.append("sessionId","mobile-user");
+    var res=await fetch(WEBHOOK_URL,{method:"POST",body:fd});
+    var data=await res.json();
+    L.textContent=data.reply||"(no reply)";
+    if(data.audioBase64){addPlay(L,data.audioBase64);play(data.audioBase64);}
+  }catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}
+  chat.scrollTop=chat.scrollHeight;
+}
 btn.addEventListener("click",sendText);
 input.addEventListener("keydown",function(e){if(e.key==="Enter")sendText();});
 mic.addEventListener("click",toggleMic);
