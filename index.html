@@ -58,9 +58,41 @@ function addPlay(bubble,b64){var pb=document.createElement("button");pb.classNam
 add("Namaste priya mitra "+PRAY,"bot");
 async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(no reply)";}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
-async function toggleMic(){if(recording){mediaRec.stop();return;}try{var stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaRec=new MediaRecorder(stream);chunks=[];mediaRec.ondataavailable=function(e){if(e.data && e.data.size>0){chunks.push(e.data);}};mediaRec.onstop=function(){recording=false;mic.classList.remove("rec");stream.getTracks().forEach(function(t){t.stop();});var finalBlob=new Blob(chunks,{type:"audio/webm"});sendVoice(finalBlob);};mediaRec.start();recording=true;mic.classList.add("rec");}catch(e){alert("Mic access nahi mila: "+e.name+" - "+e.message);}}
+async function toggleMic(){
+  alert("STEP 1: Mic tapped. recording=" + recording);
+  if(recording){
+    alert("STEP 2: Calling stop() now.");
+    mediaRec.stop();
+    return;
+  }
+  try{
+    var stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    alert("STEP A: Got mic stream OK.");
+    mediaRec=new MediaRecorder(stream);
+    chunks=[];
+    mediaRec.ondataavailable=function(e){
+      alert("STEP B: ondataavailable fired. size=" + e.data.size);
+      if(e.data && e.data.size>0){chunks.push(e.data);}
+    };
+    mediaRec.onstop=function(){
+      alert("STEP C: onstop fired. chunks.length=" + chunks.length);
+      recording=false;
+      mic.classList.remove("rec");
+      stream.getTracks().forEach(function(t){t.stop();});
+      var finalBlob=new Blob(chunks,{type:"audio/webm"});
+      alert("STEP D: finalBlob size=" + finalBlob.size);
+      sendVoice(finalBlob);
+    };
+    mediaRec.start();
+    alert("STEP E: mediaRec.start() called. state=" + mediaRec.state);
+    recording=true;
+    mic.classList.add("rec");
+  }catch(e){
+    alert("Mic access nahi mila: "+e.name+" - "+e.message);
+  }
+}
 async function sendVoice(blob){
-alert("DEBUG - Recording size: " + blob.size + " bytes, type: " + blob.type + ", chunks: " + chunks.length);
+alert("STEP F: sendVoice called. blob size=" + blob.size + " type=" + blob.type);
 add(String.fromCodePoint(127908)+" (aapki awaaz)","user");var L=addTyping();try{var fd=new FormData();fd.append("data",blob,"recording.webm");fd.append("sessionId","mobile-user");var res=await fetch(WEBHOOK_URL,{method:"POST",body:fd});var data=await res.json();L.textContent=data.reply||"(no reply)";if(data.audioBase64){addPlay(L,data.audioBase64);play(data.audioBase64);}}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 btn.addEventListener("click",sendText);
 input.addEventListener("keydown",function(e){if(e.key==="Enter")sendText();});
