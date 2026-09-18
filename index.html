@@ -58,30 +58,33 @@ function addPlay(bubble,b64){var pb=document.createElement("button");pb.classNam
 add("Namaste priya mitra "+PRAY,"bot");
 async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(no reply)";}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
-async function toggleMic(){
-  if(recording){
-    mediaRec.stop();
-    return;
-  }
-  try{
-    var stream=await navigator.mediaDevices.getUserMedia({audio:true});
+function startRecording(e){
+  e.preventDefault();
+  if(recording)return;
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
     mediaRec=new MediaRecorder(stream);
     chunks=[];
-    mediaRec.ondataavailable=function(e){
-      if(e.data && e.data.size>0){chunks.push(e.data);}
+    mediaRec.ondataavailable=function(ev){
+      if(ev.data && ev.data.size>0){chunks.push(ev.data);}
     };
     mediaRec.onstop=function(){
       recording=false;
       mic.classList.remove("rec");
       stream.getTracks().forEach(function(t){t.stop();});
       var finalBlob=new Blob(chunks,{type:"audio/webm"});
-      sendVoice(finalBlob,"recording.webm");
+      if(finalBlob.size>0){sendVoice(finalBlob,"recording.webm");}
     };
     mediaRec.start();
     recording=true;
     mic.classList.add("rec");
-  }catch(e){
+  }).catch(function(e){
     alert("Mic access nahi mila: "+e.name+" - "+e.message);
+  });
+}
+function stopRecording(e){
+  if(e)e.preventDefault();
+  if(recording && mediaRec){
+    mediaRec.stop();
   }
 }
 async function sendVoice(blob,filename){
@@ -100,6 +103,9 @@ async function sendVoice(blob,filename){
 }
 btn.addEventListener("click",sendText);
 input.addEventListener("keydown",function(e){if(e.key==="Enter")sendText();});
-mic.addEventListener("click",toggleMic);
+mic.addEventListener("pointerdown",startRecording);
+mic.addEventListener("pointerup",stopRecording);
+mic.addEventListener("pointerleave",stopRecording);
+mic.addEventListener("pointercancel",stopRecording);
 </script>
 </body></html>
