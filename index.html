@@ -18,7 +18,7 @@ body{
   position:relative;
   background:
     linear-gradient(180deg, rgba(8,6,16,0.35) 0%, rgba(8,6,16,0.35) 30%, rgba(8,6,16,0.6) 55%, rgba(6,4,12,0.88) 78%, rgba(5,3,10,0.96) 100%),
-    url('krishna-header.jpg') center 18% / cover no-repeat fixed;
+    url('krishna-header.jpg') 38% 22% / cover no-repeat fixed;
 }
 
 header{
@@ -135,12 +135,12 @@ header .sub{
 <script>
 var WEBHOOK_URL = "https://ishikagarg.app.n8n.cloud/webhook/gita-voice";
 var chat=document.getElementById("chat"),input=document.getElementById("msg"),btn=document.getElementById("send"),mic=document.getElementById("mic");
-var LOTUS=String.fromCodePoint(129466),PRAY=String.fromCodePoint(128591);
+var LOTUS=String.fromCodePoint(129719),PRAY=String.fromCodePoint(128591);
 function add(t,w){var row=document.createElement("div");row.className="row "+w;var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);var b=document.createElement("div");b.className="bubble";b.textContent=t;row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
 function addTyping(){var row=document.createElement("div");row.className="row bot";var av=document.createElement("div");av.className="av bot";av.textContent=LOTUS;var b=document.createElement("div");b.className="bubble";var t=document.createElement("span");t.className="typing";t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));b.appendChild(t);row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
 function play(b64){var a=new Audio("data:audio/wav;base64,"+b64);a.play();}
 function addPlay(bubble,b64){var pb=document.createElement("button");pb.className="playbtn";pb.textContent=String.fromCodePoint(128266)+" सुनें";pb.onclick=function(){play(b64);};bubble.appendChild(document.createElement("br"));bubble.appendChild(pb);}
-add("नमस्ते प्रिय मित्र "+PRAY+" मैं श्री कृष्ण वाणी हूँ। अपना प्रश्न पूछिए...","bot");
+add("नमस्ते प्रिय मित्र "+PRAY+" अपना प्रश्न पूछिए...","bot");
 async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(कोई उत्तर नहीं)";}catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
 function startRecording(e){
