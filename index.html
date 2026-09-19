@@ -7,240 +7,167 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;}
+html,body{height:100%;margin:0}
 body{
   font-family:'Tiro Devanagari Hindi',Poppins,-apple-system,Segoe UI,Roboto,sans-serif;
   color:#f3f0ff;
   display:flex;
   flex-direction:column;
-  height:100vh;
   height:100dvh;
   overflow:hidden;
   position:relative;
-  background:#0a0714;
 }
-
-.app-shell{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  height:100%;
-  width:100%;
-  max-width:560px;
-  margin:0 auto;
-  overflow:hidden;
-  background:
-    linear-gradient(180deg, rgba(8,6,16,0.30) 0%, rgba(8,6,16,0.45) 30%, rgba(8,6,16,0.65) 55%, rgba(6,4,12,0.88) 78%, rgba(5,3,10,0.96) 100%),
-    url('krishna-header.jpg') center top / cover no-repeat;
+.bg{
+  position:fixed;
+  inset:0;
+  background-image:url('krishna-header.jpg');
+  background-size:cover;
+  background-position:center 30%;
+  z-index:-2;
 }
-
+.bg-overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,
+    rgba(10,7,20,0.35) 0%,
+    rgba(10,7,20,0.55) 35%,
+    rgba(10,7,20,0.82) 65%,
+    rgba(6,4,14,0.96) 100%);
+  z-index:-1;
+}
 header{
-  position:relative;
-  z-index:2;
+  padding:20px 16px 14px;
   text-align:center;
-  padding:22px 20px 16px;
   flex-shrink:0;
 }
-.om-line{font-size:13px;letter-spacing:3px;color:#ffd98a;opacity:0.85;margin-bottom:6px}
 header .title{
-  font-size:clamp(20px,6vw,27px);
+  font-size:26px;
   font-weight:700;
   letter-spacing:.5px;
   color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,0.75), 0 0 22px rgba(255,196,84,0.45);
+  text-shadow:0 2px 12px rgba(0,0,0,0.8), 0 0 22px rgba(255,196,84,0.45);
 }
 header .sub{
-  font-size:clamp(12px,3.4vw,14px);
+  font-size:14px;
   color:#ffe9c2;
   margin-top:6px;
   font-weight:400;
   letter-spacing:.2px;
-  text-shadow:0 1px 6px rgba(0,0,0,0.85);
+  text-shadow:0 1px 8px rgba(0,0,0,0.85);
 }
 .divider{
-  width:70px;height:1.5px;margin:12px auto 0;
+  width:80px;
+  height:2px;
+  margin:10px auto 0;
   background:linear-gradient(90deg, transparent, #ffd98a, transparent);
+  border-radius:2px;
 }
-.tagline{
-  margin-top:10px;
-  font-size:12.5px;
-  font-style:italic;
-  color:#d8cdfa;
-  text-shadow:0 1px 6px rgba(0,0,0,0.85);
-}
-
 #chat{
-  position:relative;
-  z-index:2;
   flex:1;
-  min-height:0;
   overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  padding:14px 14px 8px;
+  padding:12px 14px 10px;
   display:flex;
   flex-direction:column;
   gap:12px;
+  min-height:0;
 }
 #chat::-webkit-scrollbar{width:0}
 .row{display:flex;align-items:flex-end;gap:8px;animation:pop .28s ease}
 .row.user{flex-direction:row-reverse}
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.35)}
-.av.bot{background:linear-gradient(135deg,#ffe08a,#d4af37)}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.av.bot{background:linear-gradient(135deg,#ffb347,#ff7e5f)}
 .av.user{background:linear-gradient(135deg,#6a8dff,#8f6cff)}
-.bubble{
-  max-width:78%;padding:12px 15px;border-radius:18px;line-height:1.6;font-size:15px;
-  white-space:pre-wrap;word-wrap:break-word;
-  box-shadow:0 6px 20px rgba(0,0,0,.35);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
-.user .bubble{background:rgba(106,141,255,0.55);color:#fff;border:1px solid rgba(255,255,255,0.18);border-bottom-right-radius:6px}
-.bot .bubble{background:rgba(20,14,34,0.55);border:1px solid rgba(255,217,138,0.22);color:#f6f1ff;border-bottom-left-radius:6px}
-.bubble .cite{display:block;margin-top:6px;font-size:12.5px;color:#ffd98a;font-style:italic;opacity:0.9}
+.bubble{max-width:78%;padding:12px 15px;border-radius:18px;line-height:1.6;font-size:15.5px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.user .bubble{background:linear-gradient(135deg,rgba(106,141,255,0.92),rgba(143,108,255,0.92));color:#fff;border-bottom-right-radius:6px}
+.bot .bubble{background:rgba(20,14,32,0.72);border:1px solid rgba(255,255,255,0.12);color:#efeaff;border-bottom-left-radius:6px}
 .typing{display:inline-flex;gap:4px;align-items:center}
 .typing i{width:7px;height:7px;border-radius:50%;background:#c9b8ff;display:inline-block;animation:blink 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
-.playbtn{
-  display:inline-flex;align-items:center;gap:5px;margin-top:8px;
-  background:rgba(255,217,138,0.14);border:1px solid rgba(255,217,138,0.35);
-  color:#ffd98a;padding:6px 14px;border-radius:14px;font-size:12.5px;font-family:inherit;cursor:pointer;
-}
-
+.playbtn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,217,138,0.35);color:#ffd98a;padding:6px 14px;border-radius:14px;font-size:13px;font-family:inherit;cursor:pointer}
 #bar{
-  position:relative;z-index:2;
-  display:flex;gap:8px;
-  flex-shrink:0;
+  display:flex;
+  gap:8px;
   padding:12px 12px calc(12px + env(safe-area-inset-bottom));
-  background:rgba(10,7,20,0.9);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(10,7,18,0.88);
   border-top:1px solid rgba(255,217,138,0.18);
+  flex-shrink:0;
 }
-#msg{
-  flex:1;min-width:0;padding:13px 16px;border-radius:24px;
-  border:1px solid rgba(255,217,138,0.25);
-  background:rgba(255,255,255,0.08);
-  color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border .2s;
-}
-#msg::placeholder{color:#c9bfe8}
+#msg{flex:1;padding:13px 16px;border-radius:24px;border:1px solid rgba(255,217,138,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border .2s;min-width:0}
+#msg::placeholder{color:#b9aed9}
 #msg:focus{border-color:#ff9d6c}
-#mic,#send{width:50px;height:50px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
-#mic svg,#send svg{width:22px;height:22px}
-#mic{border:1px solid rgba(255,217,138,0.35);background:rgba(255,217,138,0.12);color:#ffd98a;touch-action:none;user-select:none;-webkit-user-select:none}
-#mic.rec{background:linear-gradient(135deg,#ff5f6d,#ff2d55);color:#fff;border-color:transparent;animation:pulse 1s infinite}
+#mic,#send{width:48px;height:48px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
+#mic svg,#send svg{width:21px;height:21px}
+#mic{border:1px solid rgba(255,217,138,0.35);background:rgba(255,255,255,0.1);color:#ffd98a;touch-action:none;user-select:none;-webkit-user-select:none}
+#mic.rec{background:linear-gradient(135deg,#ff5f6d,#ff2d55);color:#fff;border-color:transparent;animation:pulse 1s infinite;transform:scale(1.12)}
 #send{border:none;background:linear-gradient(135deg,#ffb347,#ff7e5f);color:#fff;box-shadow:0 4px 14px rgba(255,126,95,.5)}
-#send:active,#mic:active{transform:scale(.9)}
+#send:active{transform:scale(.9)}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,45,85,.6)}70%{box-shadow:0 0 0 12px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
-
-.modal-overlay{
-  position:fixed;inset:0;z-index:50;
-  background:rgba(5,3,10,0.72);
-  display:flex;align-items:center;justify-content:center;
-  padding:24px;
-  opacity:0;pointer-events:none;
-  transition:opacity .25s ease;
-}
-.modal-overlay.show{opacity:1;pointer-events:auto}
-.modal-card{
-  background:linear-gradient(180deg,#241a3f,#150f28);
-  border:1px solid rgba(255,217,138,0.25);
-  border-radius:18px;
-  padding:26px 24px 22px;
-  max-width:320px;width:100%;
-  text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,0.5);
-  transform:translateY(10px);
-  transition:transform .25s ease;
-}
-.modal-overlay.show .modal-card{transform:translateY(0)}
-.modal-card .icon{font-size:34px;margin-bottom:10px}
-.modal-card h3{margin:0 0 10px;font-size:18px;font-weight:700;color:#ffd98a}
-.modal-card p{margin:0 0 20px;font-size:13.5px;color:#d8cdf0;line-height:1.6}
-.modal-btn{
-  display:inline-block;width:100%;
-  background:linear-gradient(135deg,#ffd98a,#d4af37);
-  color:#241a3f;font-weight:700;font-size:14.5px;
-  padding:12px 0;border-radius:12px;
-  text-decoration:none;
-}
-.modal-close{
-  display:block;margin:14px auto 0;
-  background:none;border:none;color:#9a90bb;
-  font-size:12.5px;cursor:pointer;
-}
-
-@media (max-width:340px){
-  header{padding:16px 12px 14px}
-  .bubble{max-width:85%;font-size:14px}
-  #mic,#send{width:44px;height:44px}
-}
-@media (min-width:700px){
-  .app-shell{max-width:520px;box-shadow:0 0 60px rgba(0,0,0,0.5);}
+@media (min-height:750px){
+  header{padding:36px 16px 20px}
+  header .title{font-size:30px}
 }
 </style></head><body>
-
-<div class="app-shell">
-
+<div class="bg"></div>
+<div class="bg-overlay"></div>
 <header>
-  <div class="om-line">ॐ</div>
   <div class="title">श्री कृष्ण वाणी</div>
   <div class="divider"></div>
   <div class="sub">हर प्रश्न का उत्तर, गीता के प्रकाश में</div>
 </header>
-
 <div id="chat"></div>
-
 <div id="bar">
-<button id="mic" title="बोलें"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg></button>
+<button id="mic" title="दबाकर बोलें"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg></button>
 <input id="msg" placeholder="यहाँ अपना प्रश्न लिखें..." autocomplete="off">
 <button id="send" title="भेजें"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.45-7.48a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.4.92V9.6a1 1 0 0 0 .78.98L14 12 2.78 13.42a1 1 0 0 0-.78.98v5.08a1 1 0 0 0 1.4.92z"/></svg></button>
 </div>
-
-</div>
-
-<div class="modal-overlay" id="subModal">
-  <div class="modal-card">
-    <div class="icon">🪷</div>
-    <h3>निःशुल्क सीमा पूरी हुई</h3>
-    <p>आपने 5 प्रश्न पूछ लिए हैं। आगे बातचीत जारी रखने के लिए कृपया दक्षिणा अर्पित करें।</p>
-    <a class="modal-btn" href="subscribe.html" target="_blank" rel="noopener">दक्षिणा दें</a>
-  </div>
-</div>
-
 <script>
 var WEBHOOK_URL = "https://ishikagarg.app.n8n.cloud/webhook/gita-voice";
 var chat=document.getElementById("chat"),input=document.getElementById("msg"),btn=document.getElementById("send"),mic=document.getElementById("mic");
-var LOTUS=String.fromCodePoint(129719),PRAY=String.fromCodePoint(128591);
-function add(t,w){var row=document.createElement("div");row.className="row "+w;var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);var b=document.createElement("div");b.className="bubble";b.textContent=t;row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
-function addTyping(){var row=document.createElement("div");row.className="row bot";var av=document.createElement("div");av.className="av bot";av.textContent=LOTUS;var b=document.createElement("div");b.className="bubble";var t=document.createElement("span");t.className="typing";t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));b.appendChild(t);row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
+var LOTUS=String.fromCodePoint(129466),PRAY=String.fromCodePoint(128591);
+
+function add(t,w){
+  var row=document.createElement("div");row.className="row "+w;
+  var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);
+  var b=document.createElement("div");b.className="bubble";b.textContent=t;
+  row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;
+}
+function addTyping(){
+  var row=document.createElement("div");row.className="row bot";
+  var av=document.createElement("div");av.className="av bot";av.textContent=LOTUS;
+  var b=document.createElement("div");b.className="bubble";
+  var t=document.createElement("span");t.className="typing";
+  t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));
+  b.appendChild(t);row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;
+}
 function play(b64){var a=new Audio("data:audio/wav;base64,"+b64);a.play();}
-function addPlay(bubble,b64){var pb=document.createElement("button");pb.className="playbtn";pb.textContent=String.fromCodePoint(128266)+" सुनें";pb.onclick=function(){play(b64);};bubble.appendChild(document.createElement("br"));bubble.appendChild(pb);}
+function addPlay(bubble,b64){
+  var pb=document.createElement("button");pb.className="playbtn";
+  pb.textContent=String.fromCodePoint(128266)+" सुनें";
+  pb.onclick=function(){play(b64);};
+  bubble.appendChild(document.createElement("br"));bubble.appendChild(pb);
+}
 add("नमस्ते प्रिय मित्र "+PRAY,"bot");
-var msgCount = 0;
-var subModal = document.getElementById("subModal");
-var FREE_LIMIT = 3;
 
-function isUnlocked(){
-  return localStorage.getItem("krishna_unlocked") === "true";
-}
-function showPaywall(){
-  subModal.classList.add("show");
-}
-function canSendMessage(){
-  if(isUnlocked()) return true;
-  if(msgCount >= FREE_LIMIT){
-    showPaywall();
-    return false;
-  }
-  return true;
+async function sendText(){
+  var m=input.value.trim();if(!m)return;
+  add(m,"user");input.value="";
+  var L=addTyping();
+  try{
+    var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});
+    var data=await res.json();
+    L.textContent=data.reply||"(कोई उत्तर नहीं)";
+  }catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}
+  chat.scrollTop=chat.scrollHeight;
 }
 
-async function sendText(){var m=input.value.trim();if(!m)return;if(!canSendMessage())return;add(m,"user");input.value="";msgCount++;var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(कोई उत्तर नहीं)";}catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}chat.scrollTop=chat.scrollHeight;}
+/* ---- WhatsApp-style hold-to-talk mic ---- */
 var mediaRec=null,chunks=[],recording=false;
+
 function startRecording(e){
   e.preventDefault();
   if(recording)return;
-  if(!canSendMessage())return;
   if(e.pointerId!==undefined && mic.setPointerCapture){
     try{mic.setPointerCapture(e.pointerId);}catch(err){}
   }
@@ -261,18 +188,19 @@ function startRecording(e){
     recording=true;
     mic.classList.add("rec");
   }).catch(function(e){
-    alert("माइक एक्सेस नहीं मिला: "+e.name+" - "+e.message);
+    alert("Mic access nahi mila: "+e.name+" - "+e.message);
   });
 }
+
 function stopRecording(e){
   if(e)e.preventDefault();
   if(recording && mediaRec){
     mediaRec.stop();
   }
 }
+
 async function sendVoice(blob,filename){
   add(String.fromCodePoint(127908)+" (आपकी आवाज़)","user");
-  msgCount++;
   var L=addTyping();
   try{
     var fd=new FormData();
@@ -285,12 +213,13 @@ async function sendVoice(blob,filename){
   }catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}
   chat.scrollTop=chat.scrollHeight;
 }
+
 btn.addEventListener("click",sendText);
 input.addEventListener("keydown",function(e){if(e.key==="Enter")sendText();});
-mic.addEventListener("pointerdown",startRecording);
-mic.addEventListener("pointerup",stopRecording);
-mic.addEventListener("pointerleave",stopRecording);
-mic.addEventListener("pointercancel",stopRecording);
-</script>
 
+mic.addEventListener("pointerdown", startRecording);
+mic.addEventListener("pointerup", stopRecording);
+mic.addEventListener("pointerleave", stopRecording);
+mic.addEventListener("pointercancel", stopRecording);
+</script>
 </body></html>
