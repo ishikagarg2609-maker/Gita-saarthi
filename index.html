@@ -175,15 +175,11 @@ header .sub{
     <h3>निःशुल्क सीमा पूरी हुई</h3>
     <p>आपने 5 प्रश्न पूछ लिए हैं। आगे बातचीत जारी रखने के लिए कृपया दक्षिणा अर्पित करें।</p>
     <a class="modal-btn" href="subscribe.html" target="_blank" rel="noopener">दक्षिणा दें</a>
-    <button class="modal-close" id="modalClose">बंद करें</button>
   </div>
 </div>
 
 <script>
 var WEBHOOK_URL = "https://ishikagarg.app.n8n.cloud/webhook/gita-voice";
-// Same status webhook used on subscribe.html — used here to re-verify a stored unlock.
-var STATUS_WEBHOOK = "https://ishikagarg.app.n8n.cloud/webhook/gita-subscribe-status";
-
 var chat=document.getElementById("chat"),input=document.getElementById("msg"),btn=document.getElementById("send"),mic=document.getElementById("mic");
 var LOTUS=String.fromCodePoint(129719),PRAY=String.fromCodePoint(128591);
 function add(t,w){var row=document.createElement("div");row.className="row "+w;var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);var b=document.createElement("div");b.className="bubble";b.textContent=t;row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
@@ -198,9 +194,6 @@ var FREE_LIMIT = 5;
 function isUnlocked(){
   return localStorage.getItem("krishna_unlocked") === "true";
 }
-function clearUnlock(){
-  localStorage.removeItem("krishna_unlocked");
-}
 function showPaywall(){
   subModal.classList.add("show");
 }
@@ -212,32 +205,6 @@ function canSendMessage(){
   }
   return true;
 }
-document.getElementById("modalClose").addEventListener("click", function(){
-  subModal.classList.remove("show");
-});
-
-// A locally-set "unlocked" flag isn't proof of anything by itself (it can be
-// edited in dev tools), so on load we re-confirm it with the server. If the
-// phone number is no longer marked "approved" there, we revoke the local flag.
-(async function revalidateUnlock(){
-  if(!isUnlocked()) return;
-  var phone = localStorage.getItem("krishna_phone");
-  if(!phone){ clearUnlock(); return; }
-  try{
-    var res = await fetch(STATUS_WEBHOOK, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({phone: phone})
-    });
-    var data = await res.json();
-    if(data.status !== "approved"){
-      clearUnlock();
-    }
-  }catch(e){
-    // Network/webhook hiccup: keep the existing local state rather than
-    // locking out a legitimate, already-approved user.
-  }
-})();
 
 async function sendText(){var m=input.value.trim();if(!m)return;if(!canSendMessage())return;add(m,"user");input.value="";msgCount++;var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(कोई उत्तर नहीं)";}catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
