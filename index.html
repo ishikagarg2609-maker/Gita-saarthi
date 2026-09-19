@@ -1,38 +1,95 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="hi"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Gita Saarthi</title>
+<title>श्री कृष्ण वाणी</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:Poppins,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,#3b2a63 0%,#1a1338 40%,#0d0a1f 100%);color:#f3f0ff;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
-header{padding:18px 16px 16px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0));border-bottom:1px solid rgba(255,255,255,0.08)}
-header .om{font-size:30px;display:block;line-height:1;filter:drop-shadow(0 0 12px rgba(255,196,84,0.6))}
-header .title{font-size:20px;font-weight:700;letter-spacing:.5px;margin-top:4px;background:linear-gradient(90deg,#ffd98a,#ff9d6c);-webkit-background-clip:text;background-clip:text;color:transparent}
-header .sub{font-size:12px;color:#c9c2e8;margin-top:2px;font-weight:400}
-#chat{flex:1;overflow-y:auto;padding:18px 14px 8px;display:flex;flex-direction:column;gap:12px}
+body{
+  margin:0;
+  font-family:'Tiro Devanagari Hindi',Poppins,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:#0d0a1f;
+  color:#f3f0ff;
+  display:flex;
+  flex-direction:column;
+  height:100dvh;
+  overflow:hidden;
+}
+header{
+  position:relative;
+  text-align:center;
+  overflow:hidden;
+  border-bottom:1px solid rgba(255,196,84,0.3);
+  background-image:
+    linear-gradient(180deg, rgba(10,7,20,0.15) 0%, rgba(10,7,20,0.35) 45%, rgba(10,7,20,0.92) 100%),
+    url('krishna-header.jpg');
+  background-size:cover;
+  background-position:center 20%;
+  padding:26px 16px 20px;
+  min-height:190px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+header .title{
+  position:relative;
+  z-index:1;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(255,196,84,0.4);
+}
+header .sub{
+  position:relative;
+  z-index:1;
+  font-size:15px;
+  color:#ffe9c2;
+  margin-top:6px;
+  font-weight:400;
+  letter-spacing:.2px;
+  text-shadow:0 1px 6px rgba(0,0,0,0.8);
+}
+.divider{
+  position:relative;
+  z-index:1;
+  width:90px;
+  height:2px;
+  margin:12px auto 0;
+  background:linear-gradient(90deg, transparent, #ffd98a, transparent);
+  border-radius:2px;
+}
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:18px 14px 8px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:radial-gradient(1200px 700px at 50% -15%, #3a2a5c 0%, #221640 35%, #130c28 65%, #08050f 100%);
+}
 #chat::-webkit-scrollbar{width:0}
 .row{display:flex;align-items:flex-end;gap:8px;animation:pop .28s ease}
 .row.user{flex-direction:row-reverse}
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .av.bot{background:linear-gradient(135deg,#ffb347,#ff7e5f)}
 .av.user{background:linear-gradient(135deg,#6a8dff,#8f6cff)}
-.bubble{max-width:78%;padding:12px 15px;border-radius:18px;line-height:1.5;font-size:15px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.bubble{max-width:78%;padding:12px 15px;border-radius:18px;line-height:1.6;font-size:15.5px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .user .bubble{background:linear-gradient(135deg,#6a8dff,#8f6cff);color:#fff;border-bottom-right-radius:6px}
 .bot .bubble{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.09);color:#efeaff;border-bottom-left-radius:6px}
 .typing{display:inline-flex;gap:4px;align-items:center}
 .typing i{width:7px;height:7px;border-radius:50%;background:#c9b8ff;display:inline-block;animation:blink 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
-.playbtn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(255,255,255,0.12);border:none;color:#ffd98a;padding:6px 14px;border-radius:14px;font-size:13px;font-family:inherit;cursor:pointer}
-#bar{display:flex;gap:8px;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:rgba(20,14,42,0.85);border-top:1px solid rgba(255,255,255,0.08)}
-#msg{flex:1;padding:13px 16px;border-radius:24px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border .2s}
+.playbtn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,217,138,0.3);color:#ffd98a;padding:6px 14px;border-radius:14px;font-size:13px;font-family:inherit;cursor:pointer}
+#bar{display:flex;gap:8px;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:rgba(15,10,28,0.9);border-top:1px solid rgba(255,217,138,0.15)}
+#msg{flex:1;padding:13px 16px;border-radius:24px;border:1px solid rgba(255,217,138,0.18);background:rgba(255,255,255,0.06);color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border .2s}
 #msg::placeholder{color:#a99fce}
 #msg:focus{border-color:#ff9d6c}
 #mic,#send{width:50px;height:50px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s}
 #mic svg,#send svg{width:22px;height:22px}
-#mic{border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#ffd98a;touch-action:none;user-select:none;-webkit-user-select:none}
+#mic{border:1px solid rgba(255,217,138,0.3);background:rgba(255,255,255,0.08);color:#ffd98a;touch-action:none;user-select:none;-webkit-user-select:none}
 #mic.rec{background:linear-gradient(135deg,#ff5f6d,#ff2d55);color:#fff;border-color:transparent;animation:pulse 1s infinite}
 #send{border:none;background:linear-gradient(135deg,#ffb347,#ff7e5f);color:#fff;box-shadow:0 4px 14px rgba(255,126,95,.5)}
 #send:active,#mic:active{transform:scale(.9)}
@@ -40,12 +97,16 @@ header .sub{font-size:12px;color:#c9c2e8;margin-top:2px;font-weight:400}
 @keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,45,85,.6)}70%{box-shadow:0 0 0 12px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
 </style></head><body>
-<header><span class="om">&#128329;</span><div class="title">Gita Saarthi</div><div class="sub">Krishna ki vaani, aapke saath</div></header>
+<header>
+  <div class="title">श्री कृष्ण वाणी</div>
+  <div class="divider"></div>
+  <div class="sub">हर प्रश्न का उत्तर, गीता के प्रकाश में</div>
+</header>
 <div id="chat"></div>
 <div id="bar">
-<button id="mic" title="Bolein"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg></button>
-<input id="msg" placeholder="Yahan likhein..." autocomplete="off">
-<button id="send" title="Bhejein"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.45-7.48a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.4.92V9.6a1 1 0 0 0 .78.98L14 12 2.78 13.42a1 1 0 0 0-.78.98v5.08a1 1 0 0 0 1.4.92z"/></svg></button>
+<button id="mic" title="बोलें"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg></button>
+<input id="msg" placeholder="यहाँ अपना प्रश्न लिखें..." autocomplete="off">
+<button id="send" title="भेजें"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.45-7.48a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.4.92V9.6a1 1 0 0 0 .78.98L14 12 2.78 13.42a1 1 0 0 0-.78.98v5.08a1 1 0 0 0 1.4.92z"/></svg></button>
 </div>
 <script>
 var WEBHOOK_URL = "https://ishikagarg.app.n8n.cloud/webhook/gita-voice";
@@ -54,9 +115,9 @@ var LOTUS=String.fromCodePoint(129466),PRAY=String.fromCodePoint(128591);
 function add(t,w){var row=document.createElement("div");row.className="row "+w;var av=document.createElement("div");av.className="av "+w;av.textContent=(w==="bot"?LOTUS:PRAY);var b=document.createElement("div");b.className="bubble";b.textContent=t;row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
 function addTyping(){var row=document.createElement("div");row.className="row bot";var av=document.createElement("div");av.className="av bot";av.textContent=LOTUS;var b=document.createElement("div");b.className="bubble";var t=document.createElement("span");t.className="typing";t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));t.appendChild(document.createElement("i"));b.appendChild(t);row.appendChild(av);row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return b;}
 function play(b64){var a=new Audio("data:audio/wav;base64,"+b64);a.play();}
-function addPlay(bubble,b64){var pb=document.createElement("button");pb.className="playbtn";pb.textContent=String.fromCodePoint(128266)+" Sunein";pb.onclick=function(){play(b64);};bubble.appendChild(document.createElement("br"));bubble.appendChild(pb);}
-add("Namaste priya mitra "+PRAY,"bot");
-async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(no reply)";}catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}chat.scrollTop=chat.scrollHeight;}
+function addPlay(bubble,b64){var pb=document.createElement("button");pb.className="playbtn";pb.textContent=String.fromCodePoint(128266)+" सुनें";pb.onclick=function(){play(b64);};bubble.appendChild(document.createElement("br"));bubble.appendChild(pb);}
+add("नमस्ते प्रिय मित्र "+PRAY,"bot");
+async function sendText(){var m=input.value.trim();if(!m)return;add(m,"user");input.value="";var L=addTyping();try{var res=await fetch(WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,sessionId:"mobile-user"})});var data=await res.json();L.textContent=data.reply||"(कोई उत्तर नहीं)";}catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}chat.scrollTop=chat.scrollHeight;}
 var mediaRec=null,chunks=[],recording=false;
 function startRecording(e){
   e.preventDefault();
@@ -81,7 +142,7 @@ function startRecording(e){
     recording=true;
     mic.classList.add("rec");
   }).catch(function(e){
-    alert("Mic access nahi mila: "+e.name+" - "+e.message);
+    alert("माइक एक्सेस नहीं मिला: "+e.name+" - "+e.message);
   });
 }
 function stopRecording(e){
@@ -91,7 +152,7 @@ function stopRecording(e){
   }
 }
 async function sendVoice(blob,filename){
-  add(String.fromCodePoint(127908)+" (audio: "+filename+", "+blob.size+" bytes)","user");
+  add(String.fromCodePoint(127908)+" (आपकी आवाज़)","user");
   var L=addTyping();
   try{
     var fd=new FormData();
@@ -99,9 +160,9 @@ async function sendVoice(blob,filename){
     fd.append("sessionId","mobile-user");
     var res=await fetch(WEBHOOK_URL,{method:"POST",body:fd});
     var data=await res.json();
-    L.textContent=data.reply||"(no reply)";
+    L.textContent=data.reply||"(कोई उत्तर नहीं)";
     if(data.audioBase64){addPlay(L,data.audioBase64);play(data.audioBase64);}
-  }catch(e){L.textContent="Kuch gadbad ho gayi: "+e.message;}
+  }catch(e){L.textContent="कुछ गड़बड़ हो गयी: "+e.message;}
   chat.scrollTop=chat.scrollHeight;
 }
 btn.addEventListener("click",sendText);
