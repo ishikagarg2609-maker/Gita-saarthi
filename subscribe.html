@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>चैट जारी रखने के लिए दक्षिणा अर्पित करें</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:'Tiro Devanagari Hindi',Poppins,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%,#3b2a63 0%,#1a1338 40%,#0d0a1f 100%);
+  color:#f3f0ff;
+  display:flex;flex-direction:column;align-items:center;
+  padding:32px 20px 40px;
+  text-align:center;
+}
+h1{font-size:21px;font-weight:700;background:linear-gradient(90deg,#ffd98a,#ff9d6c);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 10px}
+p.sub{font-size:14px;color:#cdc4ec;max-width:320px;margin:0 auto 26px;line-height:1.6}
+.qr-card{
+  background:#fff;border-radius:16px;padding:18px 18px 20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.4);
+  max-width:320px;width:100%;
+}
+.qr-card img{width:100%;border-radius:8px;display:block}
+.note{margin-top:20px;font-size:13px;color:#a99fce;max-width:300px;line-height:1.6}
+.unlock-btn{
+  margin-top:26px;
+  display:inline-block;width:100%;max-width:320px;
+  background:linear-gradient(135deg,#ffd98a,#d4af37);
+  color:#241a3f;font-weight:700;font-size:15px;
+  padding:14px 0;border-radius:12px;
+  border:none;cursor:pointer;
+}
+.unlock-note{margin-top:12px;font-size:12px;color:#8a80ab;max-width:300px;line-height:1.5}
+</style></head><body>
+<h1>चैट जारी रखने के लिए दक्षिणा अर्पित करें</h1>
+<p class="sub">आपकी 5 प्रश्नों की निःशुल्क सीमा पूरी हो गई है। आगे मार्गदर्शन पाने के लिए नीचे दिए गए QR कोड से दक्षिणा अर्पित करें।</p>
+<div class="qr-card">
+  <img src="payment-qr.jpg" alt="UPI QR Code for Dakshina">
+</div>
+<p class="note">किसी भी UPI ऐप से स्कैन करके दक्षिणा अर्पित करें।</p>
+<button class="unlock-btn" id="unlockBtn">दक्षिणा अर्पित कर दी है, चैट जारी रखें</button>
+<p class="unlock-note">दक्षिणा अर्पित करने के बाद यह बटन दबाएं — आप वापस चैट पर चले जाएंगे।</p>
+
+<script>
+document.getElementById("unlockBtn").addEventListener("click", function(){
+  localStorage.setItem("krishna_unlocked", "true");
+  window.location.href = "shri-krishna-vani.html";
+});
+</script>
+</body></html>
